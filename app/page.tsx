@@ -1,9 +1,9 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { Bath, Bed, Home, MapPin, Search, Shield, Square, TrendingUp, Users } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { Search, Home, TrendingUp, Users, Shield, MapPin, Bed, Bath, Square } from 'lucide-react'
 
 interface Property {
   id: string
@@ -27,7 +27,7 @@ export default function HomePage() {
     const fetchFeatured = async () => {
       try {
         setLoadingProperties(true)
-        const response = await fetch('/api/properties')
+        const response = await fetch('/api/properties?published=true')
         if (!response.ok) {
           throw new Error('Failed to load properties.')
         }
@@ -122,7 +122,7 @@ export default function HomePage() {
             <p className="text-xl md:text-2xl text-slate-300 mb-10 max-w-2xl leading-relaxed">
               Your trusted partner in real estate brokerage and consultancy. Discover exceptional properties and expert guidance.
             </p>
-            
+
             {/* Quick Search */}
             <div className="bg-white rounded-lg p-6 shadow-xl">
               <div className="flex flex-col md:flex-row gap-4">

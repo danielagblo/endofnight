@@ -1,24 +1,24 @@
-import { NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { deleteProperty, findPropertyById, updateProperty } from '@/lib/propertyStore'
+import { NextRequest, NextResponse } from 'next/server'
 
 export const runtime = 'nodejs'
 
 type RouteParams = {
-  params: {
-    id: string
-  }
+  // Next.js may provide params as a Promise<{ id: string }>
+  params: { id: string } | Promise<{ id: string }>
 }
 
-export async function GET(_: Request, { params }: RouteParams) {
-  const property = await findPropertyById(params.id)
+export async function GET(_: NextRequest, { params }: RouteParams) {
+  const { id } = (await params) as { id: string }
+  const property = await findPropertyById(id)
   if (!property) {
     return NextResponse.json({ error: 'Property not found' }, { status: 404 })
   }
   return NextResponse.json({ property })
 }
 
-export async function PUT(request: Request, { params }: RouteParams) {
+export async function PUT(request: NextRequest, { params }: RouteParams) {
   const session = await auth()
 
   if (!session || (session.user as any)?.role !== 'ADMIN') {
@@ -26,8 +26,9 @@ export async function PUT(request: Request, { params }: RouteParams) {
   }
 
   try {
-    const updates = await request.json()
-    const updated = await updateProperty(params.id, updates)
+  const updates = await request.json()
+  const { id } = (await params) as { id: string }
+  const updated = await updateProperty(id, updates)
     if (!updated) {
       return NextResponse.json({ error: 'Property not found' }, { status: 404 })
     }
@@ -39,7 +40,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
   }
 }
 
-export async function DELETE(_: Request, { params }: RouteParams) {
+export async function DELETE(_: NextRequest, { params }: RouteParams) {
   const session = await auth()
 
   if (!session || (session.user as any)?.role !== 'ADMIN') {
@@ -47,7 +48,8 @@ export async function DELETE(_: Request, { params }: RouteParams) {
   }
 
   try {
-    const deleted = await deleteProperty(params.id)
+  const { id } = (await params) as { id: string }
+  const deleted = await deleteProperty(id)
     if (!deleted) {
       return NextResponse.json({ error: 'Property not found' }, { status: 404 })
     }

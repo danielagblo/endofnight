@@ -1,17 +1,38 @@
-import { NextResponse } from 'next/server'
-import crypto from 'crypto'
 import { auth } from '@/lib/auth'
 import { addProperty, readProperties } from '@/lib/propertyStore'
 import { Property } from '@/types/property'
+import crypto from 'crypto'
+import { NextRequest, NextResponse } from 'next/server'
 
 export const runtime = 'nodejs'
 
-export async function GET() {
-  const properties = await readProperties()
-  return NextResponse.json({ properties })
+// GET handler - returns properties; if `published=true` returns only published properties.
+export async function GET(request: NextRequest) {
+  try {
+    const session = await auth()
+    const { searchParams } = new URL(request.url)
+    const published = searchParams.get('published')
+
+    // If not authenticated, only allow requesting published properties
+    if (!session && published !== 'true') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const all = await readProperties()
+    let filtered = all
+    if (published === 'true') {
+      filtered = all.filter((p: any) => p.published)
+    }
+
+    return NextResponse.json({ properties: filtered })
+  } catch (error) {
+    console.error('[PROPERTIES_GET_ERROR]', error)
+    return NextResponse.json({ error: 'Failed to fetch properties' }, { status: 500 })
+  }
 }
 
-export async function POST(request: Request) {
+// POST handler - creates a new property (admin only).
+export async function POST(request: NextRequest) {
   const session = await auth()
 
   if (!session || (session.user as any)?.role !== 'ADMIN') {
@@ -70,56 +91,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ property }, { status: 201 })
   } catch (error) {
     console.error('[PROPERTIES_POST_ERROR]', error)
-    return NextResponse.json({ error: 'Failed to create property' }, { status: 500 })
-  }
-}
-
-import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@/lib/auth'
-
-// Mock data store (replace with database)
-let properties: any[] = []
-
-export async function GET(request: NextRequest) {
-  try {
-    const session = await auth()
-    const { searchParams } = new URL(request.url)
-    const published = searchParams.get('published')
-
-    // Public access for published properties, admin for all
-    if (!session && published !== 'true') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
-    let filteredProperties = properties
-    if (published === 'true') {
-      filteredProperties = properties.filter(p => p.published)
-    }
-
-    return NextResponse.json(filteredProperties)
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch properties' }, { status: 500 })
-  }
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    const session = await auth()
-    if (!session || (session.user as any)?.role !== 'ADMIN') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
-    const body = await request.json()
-    const newProperty = {
-      id: Date.now().toString(),
-      ...body,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    }
-
-    properties.push(newProperty)
-    return NextResponse.json(newProperty, { status: 201 })
-  } catch (error) {
     return NextResponse.json({ error: 'Failed to create property' }, { status: 500 })
   }
 }
