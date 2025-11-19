@@ -1,16 +1,16 @@
 'use client'
 
+import {
+  Briefcase,
+  Building2,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  X
+} from 'lucide-react'
+import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { signOut } from 'next-auth/react'
-import { 
-  LayoutDashboard, 
-  Building2, 
-  LogOut, 
-  Menu,
-  X,
-  Briefcase
-} from 'lucide-react'
 import { useState } from 'react'
 
 const menuItems = [
@@ -53,7 +53,7 @@ export default function AdminSidebar() {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div 
+        <div
           className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50"
           onClick={() => setIsMobileMenuOpen(false)}
         />
@@ -79,7 +79,7 @@ export default function AdminSidebar() {
             {menuItems.map((item) => {
               const Icon = item.icon
               const isActive = pathname === item.href || pathname?.startsWith(item.href + '/')
-              
+
               return (
                 <Link
                   key={item.href}
@@ -87,8 +87,8 @@ export default function AdminSidebar() {
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`
                     flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors
-                    ${isActive 
-                      ? 'bg-blue-600 text-white' 
+                    ${isActive
+                      ? 'bg-accent text-white'
                       : 'text-gray-700 hover:bg-gray-100'
                     }
                   `}

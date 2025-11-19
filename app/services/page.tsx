@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Home, TrendingUp, Shield, Users, Wrench, Truck, Briefcase } from 'lucide-react'
+import { Briefcase, Home, Shield, TrendingUp, Truck, Users, Wrench } from 'lucide-react'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 interface Service {
   id: string
@@ -30,16 +30,16 @@ export default function ServicesPage() {
 
   useEffect(() => {
     fetchServices()
-    
+
     // Refresh services when page becomes visible
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
         fetchServices()
       }
     }
-    
+
     document.addEventListener('visibilitychange', handleVisibilityChange)
-    
+
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
@@ -68,7 +68,7 @@ export default function ServicesPage() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="bg-slate-900 text-white py-20">
+      <section className="bg-surface-dark text-white py-20">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -105,7 +105,7 @@ export default function ServicesPage() {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   className="bg-white rounded-lg shadow-md p-8 hover:shadow-lg transition-shadow border border-gray-100"
                 >
-                  <div className="text-blue-600 mb-6">
+                  <div className="text-accent mb-6">
                     {iconMap[service.icon] || iconMap.briefcase}
                   </div>
                   <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">{service.title}</h2>
@@ -113,7 +113,7 @@ export default function ServicesPage() {
                   <ul className="space-y-3">
                     {service.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start text-gray-700 leading-relaxed">
-                        <span className="text-blue-600 mr-3 font-bold">✓</span>
+                        <span className="text-accent mr-3 font-bold">✓</span>
                         <span>{feature}</span>
                       </li>
                     ))}
@@ -126,7 +126,7 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-slate-900 text-white">
+      <section className="py-20 bg-surface-dark text-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Ready to Get Started?

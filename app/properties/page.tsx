@@ -1,9 +1,9 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useEffect, useMemo, useState } from 'react'
-import { Search, MapPin, Bed, Bath, Square, Home } from 'lucide-react'
+import { Bath, Bed, Home, MapPin, Search, Square } from 'lucide-react'
 import Link from 'next/link'
+import { useEffect, useMemo, useState } from 'react'
 
 interface Property {
   id: string
@@ -42,18 +42,18 @@ export default function PropertiesPage() {
         const data = await response.json()
         const items: Property[] = Array.isArray(data.properties)
           ? data.properties.map((property: any) => ({
-              id: property.id,
-              title: property.title,
-              location: property.location,
-              price: property.price,
-              bedrooms: property.bedrooms ?? undefined,
-              bathrooms: property.bathrooms ?? undefined,
-              area: property.area,
-              propertyType: property.propertyType,
-              status: property.status,
-              featured: property.featured,
-              images: Array.isArray(property.images) ? property.images : [],
-            }))
+            id: property.id,
+            title: property.title,
+            location: property.location,
+            price: property.price,
+            bedrooms: property.bedrooms ?? undefined,
+            bathrooms: property.bathrooms ?? undefined,
+            area: property.area,
+            propertyType: property.propertyType,
+            status: property.status,
+            featured: property.featured,
+            images: Array.isArray(property.images) ? property.images : [],
+          }))
           : []
         setProperties(items)
       } catch (error) {
@@ -85,7 +85,7 @@ export default function PropertiesPage() {
   const getStatusBadge = (status: string) => {
     const statusConfig = {
       FOR_SALE: { label: 'For Sale', color: 'bg-green-600 text-white' },
-      FOR_RENT: { label: 'For Rent', color: 'bg-blue-600 text-white' },
+      FOR_RENT: { label: 'For Rent', color: 'bg-accent text-white' },
       BUY_PAY_LATER: { label: 'Buy & Pay Later', color: 'bg-purple-600 text-white' },
     }
     const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.FOR_SALE
@@ -104,7 +104,7 @@ export default function PropertiesPage() {
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* Hero Section */}
-      <section className="bg-slate-900 text-white py-20">
+      <section className="bg-surface-dark text-white py-20">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -129,12 +129,12 @@ export default function PropertiesPage() {
               placeholder="Location"
               value={filters.location}
               onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
             />
             <select
               value={filters.propertyType}
               onChange={(e) => setFilters({ ...filters, propertyType: e.target.value })}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+              className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent bg-white"
             >
               <option value="">All Types</option>
               <option value="HOUSE">House</option>
@@ -147,7 +147,7 @@ export default function PropertiesPage() {
             <select
               value={filters.status}
               onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+              className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent bg-white"
             >
               <option value="">All Status</option>
               <option value="FOR_SALE">For Sale</option>
@@ -159,21 +159,18 @@ export default function PropertiesPage() {
               placeholder="Min Price"
               value={filters.minPrice}
               onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
             />
             <input
               type="number"
               placeholder="Max Price"
               value={filters.maxPrice}
               onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
             />
           </form>
           <div className="mt-4 flex justify-end">
-            <button
-              onClick={handleSearch}
-              className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-3 rounded-lg font-semibold transition-colors flex items-center gap-2"
-            >
+            <button onClick={handleSearch} className="bg-accent hover:brightness-95 text-white px-8 py-3 rounded-lg font-semibold transition flex items-center gap-2">
               <Search size={20} />
               Search
             </button>
@@ -195,81 +192,78 @@ export default function PropertiesPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredProperties.map((property, index) => (
-              <motion.div
-                key={property.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
-              >
-                <div className="relative h-64 bg-gradient-to-br from-blue-100 to-blue-200 overflow-hidden">
-                  <div className="absolute top-4 left-4 z-10">
-                    {getStatusBadge(property.status)}
-                  </div>
-                  {property.featured && (
-                    <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold z-10">
-                      Featured
-                    </div>
-                  )}
-                  {property.images && property.images.length > 0 ? (
-                    <img
-                      src={property.images[0]}
-                      alt={property.title}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <Home size={60} className="text-blue-600" />
-                    </div>
-                  )}
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{property.title}</h3>
-                  <div className="flex items-center text-gray-600 mb-3">
-                    <MapPin size={18} className="mr-2 text-blue-600" />
-                    <span>{property.location}</span>
-                  </div>
-                  <div className="flex items-center justify-between mb-4">
-                    <p className="text-2xl font-bold text-blue-600">
-                      ${property.price.toLocaleString()}
-                    </p>
-                    <div className="md:hidden">
+                <motion.div
+                  key={property.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
+                >
+                  <div className="relative h-64 bg-gradient-to-br from-accent/10 to-accent/20 overflow-hidden">
+                    <div className="absolute top-4 left-4 z-10">
                       {getStatusBadge(property.status)}
                     </div>
-                  </div>
-                  <div className="flex gap-4 text-gray-600 text-sm mb-4 flex-wrap">
-                  {property.propertyType !== 'LAND' && property.propertyType !== 'OFFICE_RENTAL' && (
-                      <>
-                        <div className="flex items-center">
-                          <Bed size={18} className="mr-2 text-blue-600" />
-                        <span>{property.bedrooms ?? 0} Beds</span>
-                        </div>
-                        <div className="flex items-center">
-                          <Bath size={18} className="mr-2 text-blue-600" />
-                        <span>{property.bathrooms ?? 0} Baths</span>
-                        </div>
-                      </>
-                    )}
-                  {property.propertyType === 'OFFICE_RENTAL' && (property.bathrooms ?? 0) > 0 && (
-                      <div className="flex items-center">
-                        <Bath size={18} className="mr-2 text-blue-600" />
-                      <span>{property.bathrooms} Baths</span>
+                    {property.featured && (
+                      <div className="absolute top-4 right-4 bg-accent text-white px-3 py-1 rounded-full text-sm font-semibold z-10">
+                        Featured
                       </div>
                     )}
-                    <div className="flex items-center">
-                      <Square size={18} className="mr-2 text-blue-600" />
-                      <span>{property.area.toLocaleString()} sqft</span>
-                    </div>
+                    {property.images && property.images.length > 0 ? (
+                      <img
+                        src={property.images[0]}
+                        alt={property.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <Home size={60} className="text-accent" />
+                      </div>
+                    )}
                   </div>
-                  <Link
-                    href={`/properties/${property.id}`}
-                    className="block w-full bg-slate-900 hover:bg-slate-800 text-white text-center py-3 rounded-lg font-semibold transition-colors"
-                  >
-                    View Details
-                  </Link>
-                </div>
-              </motion.div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">{property.title}</h3>
+                    <div className="flex items-center text-gray-600 mb-3">
+                      <MapPin size={18} className="mr-2 text-accent" />
+                      <span>{property.location}</span>
+                    </div>
+                    <div className="flex items-center justify-between mb-4">
+                      <p className="text-2xl font-bold text-accent">
+                        ${property.price.toLocaleString()}
+                      </p>
+                      <div className="md:hidden">
+                        {getStatusBadge(property.status)}
+                      </div>
+                    </div>
+                    <div className="flex gap-4 text-gray-600 text-sm mb-4 flex-wrap">
+                      {property.propertyType !== 'LAND' && property.propertyType !== 'OFFICE_RENTAL' && (
+                        <>
+                          <div className="flex items-center">
+                            <Bed size={18} className="mr-2 text-accent" />
+                            <span>{property.bedrooms ?? 0} Beds</span>
+                          </div>
+                          <div className="flex items-center">
+                            <Bath size={18} className="mr-2 text-accent" />
+                            <span>{property.bathrooms ?? 0} Baths</span>
+                          </div>
+                        </>
+                      )}
+                      {property.propertyType === 'OFFICE_RENTAL' && (property.bathrooms ?? 0) > 0 && (
+                        <div className="flex items-center">
+                          <Bath size={18} className="mr-2 text-accent" />
+                          <span>{property.bathrooms} Baths</span>
+                        </div>
+                      )}
+                      <div className="flex items-center">
+                        <Square size={18} className="mr-2 text-accent" />
+                        <span>{property.area.toLocaleString()} sqft</span>
+                      </div>
+                    </div>
+                    <Link href={`/properties/${property.id}`} className="block w-full bg-accent hover:brightness-95 text-white text-center py-3 rounded-lg font-semibold transition">
+                      View Details
+                    </Link>
+                  </div>
+                </motion.div>
               ))}
             </div>
           )}

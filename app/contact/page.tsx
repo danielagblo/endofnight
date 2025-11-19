@@ -1,8 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { Clock, Mail, MapPin, Phone } from 'lucide-react'
 import { useState } from 'react'
-import { Mail, Phone, MapPin, Clock } from 'lucide-react'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -28,7 +28,7 @@ export default function ContactPage() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="bg-slate-900 text-white py-20">
+      <section className="bg-surface-dark text-white py-20">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -66,7 +66,7 @@ export default function ContactPage() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
                 <div>
@@ -79,7 +79,7 @@ export default function ContactPage() {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
                 <div>
@@ -91,7 +91,7 @@ export default function ContactPage() {
                     id="phone"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
                 <div>
@@ -104,7 +104,7 @@ export default function ContactPage() {
                     required
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
                 <div>
@@ -117,12 +117,12 @@ export default function ContactPage() {
                     rows={6}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-slate-900 hover:bg-slate-800 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+                  className="w-full bg-accent hover:bg-brightness-95 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
                 >
                   Send Message
                 </button>
@@ -134,7 +134,7 @@ export default function ContactPage() {
               <h2 className="text-3xl font-bold text-gray-900 mb-8">Get in Touch</h2>
               <div className="space-y-8">
                 <div className="flex items-start">
-                  <MapPin className="text-blue-600 mt-1 mr-4" size={24} />
+                  <MapPin className="text-accent mt-1 mr-4" size={24} />
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">Address</h3>
                     <p className="text-gray-600">
@@ -145,21 +145,21 @@ export default function ContactPage() {
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <Phone className="text-blue-600 mt-1 mr-4" size={24} />
+                  <Phone className="text-accent mt-1 mr-4" size={24} />
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">Phone</h3>
                     <p className="text-gray-600">+1 (555) 123-4567</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <Mail className="text-blue-600 mt-1 mr-4" size={24} />
+                  <Mail className="text-accent mt-1 mr-4" size={24} />
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">Email</h3>
                     <p className="text-gray-600">info@endofnight.com</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <Clock className="text-blue-600 mt-1 mr-4" size={24} />
+                  <Clock className="text-accent mt-1 mr-4" size={24} />
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">Business Hours</h3>
                     <p className="text-gray-600">

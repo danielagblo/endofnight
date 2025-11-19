@@ -1,15 +1,15 @@
 'use client'
 
+import { Building2, Home, LayoutDashboard, LogOut } from 'lucide-react'
+import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { signOut } from 'next-auth/react'
-import { Home, Building2, LogOut, LayoutDashboard } from 'lucide-react'
 
 export default function AdminNavbar() {
   const pathname = usePathname()
 
   const isActive = (path: string) => {
-    return pathname === path ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-gray-100'
+    return pathname === path ? 'bg-accent text-white' : 'text-gray-700 hover:bg-gray-100'
   }
 
   return (
@@ -18,7 +18,7 @@ export default function AdminNavbar() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-8">
             <Link href="/admin/dashboard" className="flex items-center space-x-2">
-              <Building2 className="h-6 w-6 text-blue-600" />
+              <Building2 className="h-6 w-6 text-accent" />
               <span className="text-xl font-bold text-gray-900">End of Night Admin</span>
             </Link>
             <div className="hidden md:flex space-x-1">

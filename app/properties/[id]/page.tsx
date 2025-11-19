@@ -1,11 +1,9 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useState, useEffect } from 'react'
-import { useParams, useRouter } from 'next/navigation'
-import { MapPin, Bed, Bath, Square, Home, ArrowLeft, Phone, Mail, ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { ArrowLeft, Bath, Bed, ChevronLeft, ChevronRight, Home, Mail, MapPin, Phone, Square, X } from 'lucide-react'
 import Link from 'next/link'
-import Image from 'next/image'
+import { useParams, useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 interface Property {
   id: string
@@ -60,7 +58,7 @@ export default function PropertyDetailPage() {
   const getStatusBadge = (status: string) => {
     const statusConfig = {
       FOR_SALE: { label: 'For Sale', color: 'bg-green-600 text-white' },
-      FOR_RENT: { label: 'For Rent', color: 'bg-blue-600 text-white' },
+      FOR_RENT: { label: 'For Rent', color: 'bg-accent text-white' },
       BUY_PAY_LATER: { label: 'Buy & Pay Later', color: 'bg-purple-600 text-white' },
     }
     const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.FOR_SALE
@@ -76,7 +74,7 @@ export default function PropertyDetailPage() {
       FOR_SALE: 'For Sale',
       FOR_RENT: 'For Rent',
       BUY_PAY_LATER: 'Buy & Pay Later',
-    }
+    } as const
     return statusMap[status as keyof typeof statusMap] || status
   }
 
@@ -110,7 +108,7 @@ export default function PropertyDetailPage() {
           <p className="text-lg text-gray-600 mb-8">The property you're looking for doesn't exist.</p>
           <Link
             href="/properties"
-            className="inline-block bg-slate-900 hover:bg-slate-800 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+            className="inline-block bg-primary hover:brightness-95 text-white px-8 py-3 rounded-lg font-semibold transition"
           >
             Back to Properties
           </Link>
@@ -122,7 +120,7 @@ export default function PropertyDetailPage() {
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* Hero Section */}
-      <section className="bg-slate-900 text-white py-12">
+      <section className="bg-surface-dark text-white py-12">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
           <Link
             href="/properties"
@@ -197,16 +195,15 @@ export default function PropertyDetailPage() {
                           <button
                             key={index}
                             onClick={() => setSelectedImageIndex(index)}
-                            className={`relative h-20 rounded-lg overflow-hidden border-2 transition-all ${
-                              selectedImageIndex === index
-                                ? 'border-blue-600 scale-105'
-                                : 'border-transparent hover:border-gray-300'
-                            }`}
+                            className={`relative h-20 rounded-lg overflow-hidden border-2 transition-all ${selectedImageIndex === index
+                              ? 'border-accent scale-105'
+                              : 'border-transparent hover:border-gray-300'
+                              }`}
                           >
                             <img
                               src={image}
                               alt={`${property.title} ${index + 1}`}
-                              className="w-full h-full object-cover"
+                              className="h-96 bg-gradient-to-br from-accent/10 to-accent/20 flex items-center justify-center"
                             />
                           </button>
                         ))}
@@ -215,7 +212,7 @@ export default function PropertyDetailPage() {
                   </div>
                 ) : (
                   <div className="h-96 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
-                    <Home size={100} className="text-blue-600" />
+                    <Home size={100} className="text-accent" />
                   </div>
                 )}
               </div>
@@ -233,7 +230,7 @@ export default function PropertyDetailPage() {
                   {property.propertyType !== 'LAND' && property.propertyType !== 'OFFICE_RENTAL' && (
                     <div>
                       <div className="flex items-center gap-2 text-gray-600 mb-2">
-                        <Bed size={20} className="text-blue-600" />
+                        <Bed size={20} className="text-accent" />
                         <span className="font-semibold">Bedrooms</span>
                       </div>
                       <p className="text-2xl font-bold text-gray-900">{property.bedrooms || 'N/A'}</p>
@@ -242,7 +239,7 @@ export default function PropertyDetailPage() {
                   {property.propertyType !== 'LAND' && (
                     <div>
                       <div className="flex items-center gap-2 text-gray-600 mb-2">
-                        <Bath size={20} className="text-blue-600" />
+                        <Bath size={20} className="text-accent" />
                         <span className="font-semibold">Bathrooms</span>
                       </div>
                       <p className="text-2xl font-bold text-gray-900">{property.bathrooms || 'N/A'}</p>
@@ -250,7 +247,7 @@ export default function PropertyDetailPage() {
                   )}
                   <div>
                     <div className="flex items-center gap-2 text-gray-600 mb-2">
-                      <Square size={20} className="text-blue-600" />
+                      <Square size={20} className="text-accent" />
                       <span className="font-semibold">{property.propertyType === 'LAND' ? 'Plot Size' : 'Area'}</span>
                     </div>
                     <p className="text-2xl font-bold text-gray-900">
@@ -261,7 +258,7 @@ export default function PropertyDetailPage() {
                   </div>
                   <div>
                     <div className="flex items-center gap-2 text-gray-600 mb-2">
-                      <Home size={20} className="text-blue-600" />
+                      <Home size={20} className="text-accent" />
                       <span className="font-semibold">Type</span>
                     </div>
                     <p className="text-lg font-bold text-gray-900">
@@ -277,8 +274,8 @@ export default function PropertyDetailPage() {
               {/* Price Card */}
               <div className="bg-white rounded-lg shadow-md p-8 mb-6 sticky top-20">
                 <div className="text-center mb-6">
-                  <p className="text-3xl font-bold text-blue-600 mb-2">
-                    {property.propertyType === 'OFFICE_RENTAL' || property.status === 'FOR_RENT' 
+                  <p className="text-3xl font-bold text-accent mb-2">
+                    {property.propertyType === 'OFFICE_RENTAL' || property.status === 'FOR_RENT'
                       ? `$${property.price.toLocaleString()}/mo`
                       : `$${property.price.toLocaleString()}`}
                   </p>
@@ -293,11 +290,11 @@ export default function PropertyDetailPage() {
                   )}
                 </div>
                 <div className="space-y-4">
-                  <button className="w-full bg-slate-900 hover:bg-slate-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2">
+                  <button className="w-full bg-primary hover:brightness-95 text-white px-6 py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2">
                     <Phone size={20} />
                     <span>Contact Agent</span>
                   </button>
-                  <button className="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2">
+                  <button className="w-full bg-accent hover:brightness-95 text-white px-6 py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2">
                     <Mail size={20} />
                     <span>Schedule Viewing</span>
                   </button>
@@ -308,7 +305,7 @@ export default function PropertyDetailPage() {
               <div className="bg-white rounded-lg shadow-md p-8">
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Location</h3>
                 <div className="flex items-start gap-3 text-gray-600">
-                  <MapPin size={20} className="text-blue-600 mt-1" />
+                  <MapPin size={20} className="text-accent mt-1" />
                   <div>
                     <p className="font-semibold text-gray-900">{property.address}</p>
                     <p>{property.city}, {property.state} {property.zipCode}</p>

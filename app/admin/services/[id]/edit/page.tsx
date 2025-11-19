@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter, useParams } from 'next/navigation'
 import { ArrowLeft, Save } from 'lucide-react'
 import Link from 'next/link'
+import { useParams, useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 export default function EditServicePage() {
   const router = useRouter()
@@ -55,7 +55,7 @@ export default function EditServicePage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       })
-      
+
       if (response.ok) {
         // Refresh router cache and navigate back
         router.refresh()
@@ -118,7 +118,7 @@ export default function EditServicePage() {
             required
             value={formData.title}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
             placeholder="e.g., Real Estate Brokerage"
           />
         </div>
@@ -135,7 +135,7 @@ export default function EditServicePage() {
             rows={4}
             value={formData.description}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
             placeholder="Describe your service..."
           />
         </div>
@@ -150,7 +150,7 @@ export default function EditServicePage() {
             name="icon"
             value={formData.icon}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
           >
             <option value="briefcase">Briefcase</option>
             <option value="house">House</option>
@@ -170,7 +170,7 @@ export default function EditServicePage() {
             name="published"
             checked={formData.published}
             onChange={handleChange}
-            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            className="h-4 w-4 text-accent focus:ring-accent border-gray-300 rounded"
           />
           <label htmlFor="published" className="ml-2 block text-sm text-gray-700">
             Publish this service
@@ -188,7 +188,7 @@ export default function EditServicePage() {
           <button
             type="submit"
             disabled={loading}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-lg hover:brightness-95 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Save size={18} />
             {loading ? 'Updating...' : 'Update Service'}

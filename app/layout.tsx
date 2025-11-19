@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: "End of Night Company - Real Estate Brokerage",
   description: "Your trusted partner in real estate brokerage and consultancy",
   icons: {
-    icon: '/endofnight.jpg',
+    icon: '/endofnight.png',
   },
 };
 

@@ -1,13 +1,13 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Building2, Target, Users, Award } from 'lucide-react'
+import { Award, Building2, Target, Users } from 'lucide-react'
 
 export default function AboutPage() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="bg-slate-900 text-white py-20">
+      <section className="bg-surface-dark text-white py-20">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -89,7 +89,7 @@ export default function AboutPage() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="bg-white p-8 rounded-lg shadow-md text-center"
               >
-                <div className="text-blue-600 mb-4 flex justify-center">{item.icon}</div>
+                <div className="text-accent mb-4 flex justify-center">{item.icon}</div>
                 <h3 className="text-xl font-semibold mb-3 text-gray-900">{item.title}</h3>
                 <p className="text-gray-600 leading-relaxed">{item.description}</p>
               </motion.div>

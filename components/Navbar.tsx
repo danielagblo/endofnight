@@ -22,7 +22,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center space-x-3">
             <Image
-              src="/endofnight.jpg"
+              src="/endofnight.png"
               alt="End of Night Company Logo"
               width={120}
               height={40}

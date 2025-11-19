@@ -5,6 +5,17 @@
 :root {
   --background: #ffffff;
   --foreground: #0f172a;
+  /* Design tokens: primary (dark) and accent (gold) */
+  --color-primary: #333333;
+  /* dark neutral for secondary buttons / accents */
+  --color-primary-foreground: #ffffff;
+  --color-accent: #C6964D;
+  /* gold accent for primary CTAs */
+  --color-accent-foreground: #ffffff;
+  --color-accent-hover: #b07f3f;
+  /* Surface (dark) tokens for themed backgrounds/gradients */
+  --surface-dark: #000000;
+  --surface-dark-2: #2f2f2f;
 }
 
 * {

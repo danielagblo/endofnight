@@ -27,7 +27,8 @@ export default function HomePage() {
     const fetchFeatured = async () => {
       try {
         setLoadingProperties(true)
-        const response = await fetch('/api/properties?published=true')
+        const origin = typeof window !== 'undefined' ? window.location.origin : ''
+        const response = await fetch(`${origin}/api/properties?published=true`)
         if (!response.ok) {
           throw new Error('Failed to load properties.')
         }
@@ -93,7 +94,7 @@ export default function HomePage() {
   const getStatusBadge = (status: string) => {
     const statusConfig = {
       FOR_SALE: { label: 'For Sale', color: 'bg-green-600 text-white' },
-      FOR_RENT: { label: 'For Rent', color: 'bg-blue-600 text-white' },
+      FOR_RENT: { label: 'For Rent', color: 'bg-accent text-white' },
       BUY_PAY_LATER: { label: 'Buy & Pay Later', color: 'bg-purple-600 text-white' },
     }
     const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.FOR_SALE
@@ -107,8 +108,8 @@ export default function HomePage() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="relative min-h-screen bg-slate-900 text-white flex items-center">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"></div>
+      <section className="relative min-h-screen bg-surface-dark text-white flex items-center">
+        <div className="absolute inset-0 bg-gradient-to-br from-surface-dark via-surface-dark-2 to-surface-dark"></div>
         <div className="relative w-full max-w-7xl mx-auto px-6 md:px-8 lg:px-12 py-32 z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -129,16 +130,16 @@ export default function HomePage() {
                 <input
                   type="text"
                   placeholder="Search by location..."
-                  className="flex-1 px-4 py-3 text-gray-900 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 px-4 py-3 text-gray-900 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent"
                 />
-                <select className="px-4 py-3 text-gray-900 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                <select className="px-4 py-3 text-gray-900 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent bg-white">
                   <option>All Types</option>
                   <option>House</option>
                   <option>Apartment</option>
                   <option>Condo</option>
                   <option>Villa</option>
                 </select>
-                <button className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2">
+                <button className="bg-accent hover:brightness-95 text-white px-8 py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2">
                   <Search size={20} />
                   <span>Search</span>
                 </button>
@@ -191,7 +192,7 @@ export default function HomePage() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-100"
               >
-                <div className="text-blue-600 mb-4">{service.icon}</div>
+                <div className="text-accent mb-4">{service.icon}</div>
                 <h3 className="text-xl font-semibold mb-3 text-gray-900">
                   {service.title}
                 </h3>
@@ -201,10 +202,7 @@ export default function HomePage() {
           </div>
 
           <div className="text-center mt-12">
-            <Link
-              href="/services"
-              className="inline-block bg-slate-900 hover:bg-slate-800 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
-            >
+            <Link href="/services" className="inline-block bg-accent hover:brightness-95 text-white px-8 py-3 rounded-lg font-semibold transition">
               View All Services
             </Link>
           </div>
@@ -246,7 +244,7 @@ export default function HomePage() {
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                     className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
                   >
-                    <div className="relative h-64 bg-gradient-to-br from-blue-100 to-blue-200 overflow-hidden">
+                    <div className="relative h-64 bg-gradient-to-br from-accent/10 to-accent/20 overflow-hidden">
                       <div className="absolute top-4 left-4 z-10">
                         {getStatusBadge(property.status)}
                       </div>
@@ -258,39 +256,39 @@ export default function HomePage() {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <Home size={60} className="text-blue-600" />
+                          <Home size={60} className="text-accent" />
                         </div>
                       )}
                     </div>
                     <div className="p-6">
                       <h3 className="text-xl font-bold text-gray-900 mb-2">{property.title}</h3>
                       <div className="flex items-center text-gray-600 mb-3">
-                        <MapPin size={18} className="mr-2 text-blue-600" />
+                        <MapPin size={18} className="mr-2 text-accent" />
                         <span>{property.location}</span>
                       </div>
                       <div className="flex items-center justify-between mb-4">
-                        <p className="text-2xl font-bold text-blue-600">{formattedPrice}</p>
+                        <p className="text-2xl font-bold text-accent">{formattedPrice}</p>
                         <div className="md:hidden">
                           {getStatusBadge(property.status)}
                         </div>
                       </div>
                       <div className="flex gap-4 text-gray-600 text-sm mb-4">
                         <div className="flex items-center">
-                          <Bed size={18} className="mr-2 text-blue-600" />
+                          <Bed size={18} className="mr-2 text-accent" />
                           <span>{property.bedrooms ?? 'N/A'} Beds</span>
                         </div>
                         <div className="flex items-center">
-                          <Bath size={18} className="mr-2 text-blue-600" />
+                          <Bath size={18} className="mr-2 text-accent" />
                           <span>{property.bathrooms ?? 'N/A'} Baths</span>
                         </div>
                         <div className="flex items-center">
-                          <Square size={18} className="mr-2 text-blue-600" />
+                          <Square size={18} className="mr-2 text-accent" />
                           <span>{property.area ? `${property.area.toLocaleString()} sqft` : 'N/A'}</span>
                         </div>
                       </div>
                       <Link
                         href={`/properties/${property.id}`}
-                        className="block w-full bg-slate-900 hover:bg-slate-800 text-white text-center py-3 rounded-lg font-semibold transition-colors"
+                        className="block w-full bg-accent hover:brightness-95 text-white text-center py-3 rounded-lg font-semibold transition"
                       >
                         View Details
                       </Link>
@@ -302,10 +300,7 @@ export default function HomePage() {
           </div>
 
           <div className="text-center mt-12">
-            <Link
-              href="/properties"
-              className="inline-block bg-slate-900 hover:bg-slate-800 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
-            >
+            <Link href="/properties" className="inline-block bg-accent hover:brightness-95 text-white px-8 py-3 rounded-lg font-semibold transition">
               View All Properties
             </Link>
           </div>
@@ -313,7 +308,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-slate-900 text-white">
+      <section className="py-20 bg-surface-dark text-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Ready to Find Your Dream Property?

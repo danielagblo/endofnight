@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
-import { Upload, X, Image as ImageIcon } from 'lucide-react'
+import { Image as ImageIcon, Upload, X } from 'lucide-react'
+import { useCallback, useRef, useState } from 'react'
 
 interface ImageUploadProps {
   images: string[]
@@ -120,8 +120,8 @@ export default function ImageUpload({ images, onImagesChange, maxImages = 20 }: 
         : 'PNG, JPG, GIF up to 10MB each'
 
   const uploadCtaClasses = [
-    'w-full border-2 border-dashed rounded-lg p-6 transition-colors flex flex-col items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2',
-    dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-blue-500',
+    'w-full border-2 border-dashed rounded-lg p-6 transition-colors flex flex-col items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
+    dragActive ? 'border-accent bg-accent/10' : 'border-gray-300 hover:border-accent',
     uploading ? 'cursor-not-allowed opacity-70' : 'cursor-pointer',
   ].join(' ')
 
@@ -146,7 +146,7 @@ export default function ImageUpload({ images, onImagesChange, maxImages = 20 }: 
         <p className="text-sm text-gray-500 mb-4">
           Upload multiple images. The first image will be used as the main/featured image.
         </p>
-        
+
         {images.length < maxImages && (
           <div
             role="button"
@@ -171,7 +171,7 @@ export default function ImageUpload({ images, onImagesChange, maxImages = 20 }: 
             </span>
             <span className="text-xs text-gray-500">{helperText}</span>
             {dragActive && (
-              <span className="text-xs text-blue-600 font-medium">
+              <span className="text-xs text-accent font-medium">
                 Drop the images here to upload
               </span>
             )}
@@ -203,7 +203,7 @@ export default function ImageUpload({ images, onImagesChange, maxImages = 20 }: 
               className="relative group aspect-square rounded-lg overflow-hidden border-2 border-gray-200"
             >
               {index === 0 && (
-                <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs font-semibold px-2 py-1 rounded z-10">
+                <div className="absolute top-2 left-2 bg-accent text-white text-xs font-semibold px-2 py-1 rounded z-10">
                   Main
                 </div>
               )}
@@ -225,7 +225,7 @@ export default function ImageUpload({ images, onImagesChange, maxImages = 20 }: 
                   <button
                     type="button"
                     onClick={() => handleReorder(index, 0)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded text-xs font-semibold transition-colors"
+                    className="bg-accent hover:brightness-95 text-white px-3 py-2 rounded text-xs font-semibold transition"
                     title="Set as main image"
                   >
                     Set Main

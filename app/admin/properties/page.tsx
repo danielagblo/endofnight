@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { Edit, Eye, Plus, Search, Trash2 } from 'lucide-react'
 import Link from 'next/link'
-import { Plus, Edit, Trash2, Eye, Search } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 interface Property {
   id: string
@@ -93,10 +93,7 @@ export default function AdminPropertiesPage() {
           <h1 className="text-3xl font-bold text-gray-900">Properties</h1>
           <p className="text-gray-600 mt-2">Manage all properties</p>
         </div>
-        <Link
-          href="/admin/properties/new"
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
-        >
+        <Link href="/admin/properties/new" className="bg-accent text-white px-6 py-3 rounded-lg font-semibold hover:brightness-95 transition flex items-center gap-2">
           <Plus size={20} />
           Add Property
         </Link>
@@ -110,7 +107,7 @@ export default function AdminPropertiesPage() {
             placeholder="Search properties..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
           />
         </div>
       </div>
@@ -175,22 +172,17 @@ export default function AdminPropertiesPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                        property.published
+                      className={`px-2 py-1 rounded-full text-xs font-semibold ${property.published
                           ? 'bg-green-100 text-green-800'
                           : 'bg-gray-100 text-gray-800'
-                      }`}
+                        }`}
                     >
                       {property.published ? 'Published' : 'Draft'}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex items-center justify-end gap-2">
-                      <Link
-                        href={`/properties/${property.id}`}
-                        className="text-blue-600 hover:text-blue-900 p-2 hover:bg-blue-50 rounded"
-                        title="View"
-                      >
+                      <Link href={`/properties/${property.id}`} className="text-accent hover:text-accent p-2 hover:bg-accent/10 rounded" title="View">
                         <Eye size={18} />
                       </Link>
                       <Link

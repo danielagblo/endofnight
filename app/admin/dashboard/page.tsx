@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { Building2, DollarSign, Eye, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -27,8 +27,8 @@ export default function AdminDashboard() {
       title: 'Total Properties',
       value: stats.totalProperties,
       icon: Building2,
-      color: 'bg-blue-600',
-      textColor: 'text-blue-600',
+      color: 'bg-accent',
+      textColor: 'text-accent',
     },
     {
       title: 'Published',
@@ -82,7 +82,7 @@ export default function AdminDashboard() {
           <div className="space-y-3">
             <Link
               href="/admin/properties/new"
-              className="block w-full bg-blue-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+              className="block w-full bg-accent text-white text-center py-3 rounded-lg font-semibold hover:brightness-95 transition-colors"
             >
               Add New Property
             </Link>
