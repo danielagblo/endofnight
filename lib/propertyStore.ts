@@ -1,8 +1,16 @@
+import { Property } from '@/types/property'
 import { promises as fs } from 'fs'
 import path from 'path'
-import { Property } from '@/types/property'
 
-const DATA_DIR = path.join(process.cwd(), 'data')
+// Allow overriding where data is stored via `DATA_DIR` env var.
+// If `DATA_DIR` is relative, resolve it against the project cwd. If not set,
+// fall back to the project's `data` directory.
+const DEFAULT_DATA_DIR = path.join(process.cwd(), 'data')
+const DATA_DIR = process.env.DATA_DIR
+  ? path.isAbsolute(process.env.DATA_DIR)
+    ? process.env.DATA_DIR
+    : path.resolve(process.cwd(), process.env.DATA_DIR)
+  : DEFAULT_DATA_DIR
 const FILE_PATH = path.join(DATA_DIR, 'properties.json')
 
 async function ensureFile() {

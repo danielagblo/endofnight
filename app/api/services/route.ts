@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
-import { getServices, createService } from '@/lib/services-store'
+import { createService, getServices } from '@/lib/services-store'
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
   try {
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const services = getServices(published === 'true')
+    const services = await getServices(published === 'true')
     return NextResponse.json(services)
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch services' }, { status: 500 })
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const newService = createService({
+    const newService = await createService({
       title: body.title,
       description: body.description,
       icon: body.icon || 'briefcase',

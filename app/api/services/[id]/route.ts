@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
-import { getServiceById, updateService, deleteService as deleteServiceFromStore } from '@/lib/services-store'
+import { deleteService as deleteServiceFromStore, getServiceById, updateService } from '@/lib/services-store'
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(
   request: NextRequest,
@@ -11,7 +11,7 @@ export async function GET(
     const { id } = await params
     const serviceId = id
 
-    const service = getServiceById(serviceId)
+    const service = await getServiceById(serviceId)
 
     if (!service) {
       return NextResponse.json({ error: 'Service not found' }, { status: 404 })

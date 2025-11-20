@@ -1,4 +1,7 @@
-// Shared service store (replace with database in production)
+import { promises as fs } from 'fs'
+import path from 'path'
+
+// Shared service store persisted to JSON file. Location configurable via DATA_DIR env var.
 export interface Service {
   id: string
   title: string
@@ -10,11 +13,20 @@ export interface Service {
   updatedAt?: string
 }
 
-let services: Service[] = [
+const DEFAULT_DATA_DIR = path.join(process.cwd(), 'data')
+const DATA_DIR = process.env.DATA_DIR
+  ? path.isAbsolute(process.env.DATA_DIR)
+    ? process.env.DATA_DIR
+    : path.resolve(process.cwd(), process.env.DATA_DIR)
+  : DEFAULT_DATA_DIR
+const FILE_PATH = path.join(DATA_DIR, 'services.json')
+
+const DEFAULT_SERVICES: Service[] = [
   {
     id: '1',
     title: 'Real Estate Brokerage',
-    description: 'Expert assistance in buying and selling residential and commercial properties. We help you find the perfect property or sell your existing one at the best market value.',
+    description:
+      'Expert assistance in buying and selling residential and commercial properties. We help you find the perfect property or sell your existing one at the best market value.',
     icon: 'house',
     published: true,
     features: [
@@ -30,7 +42,8 @@ let services: Service[] = [
   {
     id: '2',
     title: 'Real Estate Consultancy',
-    description: 'Strategic advice for your real estate investments. Our consultants provide insights to help you make informed decisions about property investments.',
+    description:
+      'Strategic advice for your real estate investments. Our consultants provide insights to help you make informed decisions about property investments.',
     icon: 'trending-up',
     published: true,
     features: [
@@ -42,8 +55,7 @@ let services: Service[] = [
     ],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-  },
-  {
+  },{
     id: '3',
     title: 'Property Management',
     description: 'Comprehensive property management services for landlords and property owners. We handle everything from tenant relations to maintenance.',
@@ -109,18 +121,44 @@ let services: Service[] = [
   },
 ]
 
-export function getServices(publishedOnly: boolean = false): Service[] {
-  if (publishedOnly) {
-    return services.filter(s => s.published)
+async function ensureFile() {
+  try {
+    await fs.access(FILE_PATH)
+  } catch {
+    await fs.mkdir(DATA_DIR, { recursive: true })
+    await fs.writeFile(FILE_PATH, JSON.stringify(DEFAULT_SERVICES, null, 2), 'utf-8')
   }
-  return services
 }
 
-export function getServiceById(id: string): Service | undefined {
-  return services.find(s => s.id === id)
+export async function readServices(): Promise<Service[]> {
+  await ensureFile()
+  const file = await fs.readFile(FILE_PATH, 'utf-8')
+  try {
+    return JSON.parse(file) as Service[]
+  } catch {
+    return DEFAULT_SERVICES
+  }
 }
 
-export function createService(service: Omit<Service, 'id' | 'createdAt' | 'updatedAt'>): Service {
+export async function writeServices(services: Service[]): Promise<void> {
+  await ensureFile()
+  await fs.writeFile(FILE_PATH, JSON.stringify(services, null, 2), 'utf-8')
+}
+
+export async function getServices(publishedOnly: boolean = false): Promise<Service[]> {
+  const services = await readServices()
+  return publishedOnly ? services.filter((s) => s.published) : services
+}
+
+export async function getServiceById(id: string): Promise<Service | undefined> {
+  const services = await readServices()
+  return services.find((s) => s.id === id)
+}
+
+export async function createService(
+  service: Omit<Service, 'id' | 'createdAt' | 'updatedAt'>,
+): Promise<Service> {
+  const services = await readServices()
   const newService: Service = {
     id: Date.now().toString(),
     ...service,
@@ -128,29 +166,29 @@ export function createService(service: Omit<Service, 'id' | 'createdAt' | 'updat
     updatedAt: new Date().toISOString(),
   }
   services.push(newService)
+  await writeServices(services)
   return newService
 }
 
-export function updateService(id: string, updates: Partial<Service>): Service | null {
-  const index = services.findIndex(s => s.id === id)
-  if (index === -1) {
-    return null
-  }
+export async function updateService(id: string, updates: Partial<Service>): Promise<Service | null> {
+  const services = await readServices()
+  const index = services.findIndex((s) => s.id === id)
+  if (index === -1) return null
   services[index] = {
     ...services[index],
     ...updates,
-    id, // Ensure ID doesn't change
+    id,
     updatedAt: new Date().toISOString(),
   }
+  await writeServices(services)
   return services[index]
 }
 
-export function deleteService(id: string): boolean {
-  const index = services.findIndex(s => s.id === id)
-  if (index === -1) {
-    return false
-  }
-  services.splice(index, 1)
+export async function deleteService(id: string): Promise<boolean> {
+  const services = await readServices()
+  const filtered = services.filter((s) => s.id !== id)
+  if (filtered.length === services.length) return false
+  await writeServices(filtered)
   return true
 }
 

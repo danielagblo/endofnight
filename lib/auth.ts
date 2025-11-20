@@ -1,5 +1,5 @@
-import NextAuth from "next-auth"
 import type { NextAuthConfig } from "next-auth"
+import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 
 // Simple in-memory user store (replace with database in production)
@@ -66,5 +66,8 @@ export const authConfig: NextAuthConfig = {
   secret: process.env.NEXTAUTH_SECRET || "fallback-secret-key-for-development-only"
 }
 
-export const { handlers, signIn, signOut, auth } = NextAuth(authConfig)
+// Use lazy initialization so the auth helpers (middleware wrapper and handlers)
+// are created in a request-aware way. This avoids the app returning HTML
+// documents where a JSON auth response is expected.
+export const { handlers, signIn, signOut, auth } = NextAuth(() => authConfig)
 
