@@ -37,4 +37,4 @@ jobs:
             npm install
             git pull # Pull latest changes
             npm run build
-            pm2 restart endofnight # Or your service name
+            /root/.nvm/versions/node/v20.9.0/bin/pm2 restart endofnight # Or your service name
