@@ -1,0 +1,40 @@
+name: Deploy Next.js to DigitalOcean Droplet
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.9.0" # Or your desired Node.js version
+
+      - name: Install dependencies and Build
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy to Droplet
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DROPLET_IP }}
+          username: ${{ secrets.DROPLET_USER }}
+          key: ${{ secrets.DROPLET_PKEY }}
+          script: |
+            cd endofnight # Navigate to your app directory
+            rm -rf .next # Clear old build artifacts
+            # Transfer new build artifacts (e.g., using rsync or scp in a previous step)
+            # For simplicity, assuming files are already transferred
+            npm install
+            git pull # Pull latest changes
+            npm run build
+            pm2 restart endofnight # Or your service name
